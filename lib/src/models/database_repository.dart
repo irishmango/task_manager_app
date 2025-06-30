@@ -1,21 +1,19 @@
-
-
 import 'package:todo_app/src/features/create/domain/tasks.dart';
+import 'package:todo_app/src/features/create/domain/project.dart';
+import 'package:todo_app/src/features/auth/domain/user.dart';
 
 abstract class DatabaseRepository {
-  // Groups
-  // Future<List<Group>> getGroups(String userId);
-  // Future<void> createGroup(String userId, Group group);
-  // Future<void> deleteGroup(String userId, String groupId);
-  // Future<Group> joinGroup(String userId, String groupId);
 
-  // Todos
-  Future<List<Task>> getTasks(String groupId);
-  Future<void> createTodo(String groupId, Task todo);
-  Future<void> checkTodo(String groupId, String todoId);
-  Future<void> uncheckTodo(String groupId, String todoId);
+  Future<List<Project>> getProjects(String userId);
+  Future<void> createProject(String userId, Project project);
+  Future<void> deleteProject(String userId, String projectId);
 
-  // AppUser
+  Future<List<Task>> getTasks(String projectId);
+  Future<void> createTask(String projectId, Task task);
+  Future<void> checkTask(String projectId, String taskId);
+  Future<void> uncheckTask(String projectId, String taskId);
+
+
   Future<void> createAppUser(AppUser appUser);
   Future<AppUser> getUser(String userId);
 }

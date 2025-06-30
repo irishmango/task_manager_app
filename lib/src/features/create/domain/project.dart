@@ -4,12 +4,14 @@ class Project {
   final String id;
   final String title;
   final List<Task> todos;
-  final String tag;
+  final String ownerId; 
+  final String tag;     
 
   Project({
     required this.id,
     required this.title,
     required this.todos,
+    required this.ownerId,
     this.tag = "Project",
   });
 }
