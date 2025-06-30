@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDBuYoN7BlTBwure1Dg4XHwaGVnTBsZXKE',
-    appId: '1:632906255877:android:4d98d05d6cbe7536b3166c',
+    appId: '1:632906255877:android:1326397c8ad17967b3166c',
     messagingSenderId: '632906255877',
     projectId: 'my-task-manager-app-2dcaa',
     storageBucket: 'my-task-manager-app-2dcaa.firebasestorage.app',
@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '632906255877',
     projectId: 'my-task-manager-app-2dcaa',
     storageBucket: 'my-task-manager-app-2dcaa.firebasestorage.app',
+    iosClientId: '632906255877-mv9ier3n4c89qdfg6un4q70o37c1dmka.apps.googleusercontent.com',
     iosBundleId: 'com.example.todoApp',
   );
+
 }
