@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/src/features/home/presentation/home_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart'; 
+import 'package:task_manager_app/src/features/home/presentation/home_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -15,4 +21,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

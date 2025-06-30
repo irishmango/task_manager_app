@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/src/features/auth/domain/user.dart';
-import 'package:todo_app/src/features/create/domain/project.dart';
-import 'package:todo_app/src/features/create/domain/tasks.dart';
+import 'package:task_manager_app/src/features/auth/domain/user.dart';
+import 'package:task_manager_app/src/features/create/domain/project.dart';
+import 'package:task_manager_app/src/features/create/domain/tasks.dart';
 
 import 'database_repository.dart';
 

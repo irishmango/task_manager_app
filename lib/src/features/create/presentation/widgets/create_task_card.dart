@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/src/features/create/presentation/widgets/priority_icon.dart';
+import 'package:task_manager_app/src/features/create/presentation/widgets/priority_icon.dart';
 
 class CreateTaskCard extends StatelessWidget {
   const CreateTaskCard({

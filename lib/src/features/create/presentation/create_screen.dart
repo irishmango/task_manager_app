@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/src/features/create/domain/project.dart';
-import 'package:todo_app/src/features/create/domain/tasks.dart';
-import 'package:todo_app/src/features/create/presentation/widgets/create_project_card.dart';
-import 'package:todo_app/src/features/create/presentation/widgets/create_task_card.dart';
-import 'package:todo_app/src/features/create/presentation/widgets/priority_icon.dart';
+import 'package:task_manager_app/src/features/create/domain/project.dart';
+import 'package:task_manager_app/src/features/create/domain/tasks.dart';
+import 'package:task_manager_app/src/features/create/presentation/widgets/create_project_card.dart';
+import 'package:task_manager_app/src/features/create/presentation/widgets/create_task_card.dart';
+import 'package:task_manager_app/src/features/create/presentation/widgets/priority_icon.dart';
 
 class CreateScreen extends StatefulWidget {
   const CreateScreen({super.key});
