@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:task_manager_app/src/features/auth/presentation/login_screen.dart';
 import 'firebase_options.dart'; 
 import 'package:task_manager_app/src/features/home/presentation/home_screen.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomeScreen(),
+      home: LoginScreen(),
     );
   }
 }

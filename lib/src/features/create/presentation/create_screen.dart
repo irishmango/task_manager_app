@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager_app/src/features/create/domain/project.dart';
-import 'package:task_manager_app/src/features/create/domain/tasks.dart';
-import 'package:task_manager_app/src/features/create/presentation/widgets/create_project_card.dart';
-import 'package:task_manager_app/src/features/create/presentation/widgets/create_task_card.dart';
-import 'package:task_manager_app/src/features/create/presentation/widgets/priority_icon.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class CreateScreen extends StatefulWidget {
   const CreateScreen({super.key});
@@ -13,84 +9,34 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _projectTitleController = TextEditingController();
-  final TextEditingController _projectDescriptionController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
-  String selectedPriority = 'Low';
-  String selectedCategory = 'Personal';
+  int descriptionLength = 0;
+  final List<String> assignedUsers = ['Kirill Baydakov'];
+  String selectedTag = 'UI';
+  Color tagColor = Colors.red;
+  String selectedPriority = 'High';
+  final List<String> priorityOptions = ['High', 'Medium', 'Low'];
 
-  List<String> _projectTasks = [];
+  String createType = 'Personal';
+  final List<String> createOptions = [
+    'Personal',
+    'Project',
+    'Collaboration',
+  ];
 
-  void _showTaskDialog() {
-    final titleController = TextEditingController();
-    final descriptionController = TextEditingController();
-    String tempPriority = 'Low';
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF2A2A2A),
-        content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8, 
-          child: CreateTaskCard(
-            titleController: titleController,
-            descriptionController: descriptionController,
-            selectedPriority: tempPriority,
-            onPrioritySelected: (priority) {
-              tempPriority = priority;
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _projectTasks.add(titleController.text);
-              });
-              Navigator.of(context).pop();
-            },
-            child: const Text('Add', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
+  String getButtonLabel() {
+  switch (createType) {
+    case 'Collaboration':
+      return 'Create Collaboration';
+    case 'Project':
+      return 'Create Project';
+    case 'Personal':
+    default:
+      return 'Create Task';
   }
-
-    void _createTask() {
-    if (selectedCategory == 'Personal') {
-      final task = Task(
-        id: DateTime.now().toString(),
-        title: _titleController.text,
-        description: _descriptionController.text,
-        priority: selectedPriority == 'Low'
-            ? Priority.low
-            : selectedPriority == 'Medium'
-                ? Priority.medium
-                : Priority.high,
-        isDone: false,
-        dueDate: DateTime(2066),
-        tag: selectedCategory, projectId: '',
-      );
-      Navigator.pop(context, task);
-    } else if (selectedCategory == 'Project') {
-      final project = Project(
-        id: DateTime.now().toString(),
-        title: _projectTitleController.text,
-        todos: _projectTasks.map((title) => Task(
-          id: DateTime.now().toString(),
-          title: title,
-          description: '',
-          priority: Priority.low,
-          isDone: false,
-          dueDate: DateTime(2066),
-          tag: 'Project', projectId: '',
-        )).toList(), ownerId: '',
-      );
-      Navigator.pop(context, project);
-    }
-  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -98,83 +44,291 @@ class _CreateScreenState extends State<CreateScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text('Create', style: TextStyle(color: Colors.white, fontSize: 32)),
-        centerTitle: true,
+        foregroundColor: Colors.white,
+        title: const Text("Create", style: TextStyle(fontSize: 34),),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: ['Personal', 'Project', 'Collaboration'].map((category) {
-                final isSelected = category == selectedCategory;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedCategory = category;
-                      });
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: isSelected ? Color.fromRGBO(28, 125, 28, 1) : Colors.transparent,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        category,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              // Header with Dropdown
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1F1F1F),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: createType,
+                        dropdownColor: const Color(0xFF2A2A2A),
+                        icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
                         style: const TextStyle(color: Colors.white),
+                        items: createOptions.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value, style: const TextStyle(color: Colors.white)),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            createType = newValue!;
+                          });
+                        },
                       ),
                     ),
                   ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20),
-            if (selectedCategory == 'Personal')
-              CreateTaskCard(
-                titleController: _titleController,
-                descriptionController: _descriptionController,
-                selectedPriority: selectedPriority,
-                onPrioritySelected: (priority) {
-                  setState(() {
-                    selectedPriority = priority;
-                  });
-                },
-              )
-            else if (selectedCategory == 'Project')
-              CreateProjectCard(
-                projectTitleController: _projectTitleController,
-                projectDescriptionController: _projectDescriptionController,
-                selectedPriority: selectedPriority,
-                onPrioritySelected: (priority) {
-                  setState(() {
-                    selectedPriority = priority;
-                  });
-                },
-                projectTasks: _projectTasks,
-                onAddTaskPressed: _showTaskDialog,
-              )
-            else
-              const Text("Collaboration coming soon", style: TextStyle(color: Colors.white)),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _createTask,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromRGBO(28, 125, 28, 1),
-                foregroundColor: Colors.black,
+                ],
               ),
-              child: const Text("Create"),
-            )
-          ],
+              const SizedBox(height: 16),
+
+              // Project Title Input
+              if (createType == "Project")
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1F1F1F),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextField(
+                  controller: titleController,
+                  cursorColor: Color.fromRGBO(28, 125, 28, 1),
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                  decoration: const InputDecoration(
+                    hintText: 'Project Title',
+                    hintStyle: TextStyle(color: Colors.grey),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+
+              // Title Input
+              if (createType == "Personal")
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1F1F1F),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextField(
+                  controller: titleController,
+                  cursorColor: Color.fromRGBO(28, 125, 28, 1),
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                  decoration: const InputDecoration(
+                    hintText: 'Title',
+                    hintStyle: TextStyle(color: Colors.grey),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+
+
+              // Collaboration Title Input
+              if (createType == "Collaboration")
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1F1F1F),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextField(
+                  controller: titleController,
+                  cursorColor: Color.fromRGBO(28, 125, 28, 1),
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                  decoration: const InputDecoration(
+                    hintText: 'Collaboration Title',
+                    hintStyle: TextStyle(color: Colors.grey),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Description Input
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1F1F1F),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Stack(
+                  children: [
+                    TextField(
+                      controller: descriptionController,
+                      cursorColor: Color.fromRGBO(28, 125, 28, 1),
+                      maxLines: 5,
+                      style: const TextStyle(color: Colors.white),
+                      onChanged: (text) {
+                        setState(() {
+                          descriptionLength = text.length;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Description',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Text(
+                        '$descriptionLength/300',
+                        style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Assignee section
+              if (createType == "Collaboration")
+              AssignWidget(assignedUsers: assignedUsers),
+              
+
+              // Tag selection
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1F1F1F),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                          isExpanded: true,
+                          value: selectedPriority,
+                          dropdownStyleData: DropdownStyleData(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2A2A2A),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            maxHeight: 150,
+                          ),
+                          buttonStyleData: ButtonStyleData(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1F1F1F),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+                          ),
+                          style: const TextStyle(color: Colors.white),
+                          items: priorityOptions.map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(item),
+                          )).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedPriority = value!;
+                              tagColor = switch (selectedPriority) {
+                                'High' => Colors.red,
+                                'Medium' => Colors.amber,
+                                'Low' => Colors.green,
+                                _ => Colors.grey,
+                              };
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      color: tagColor,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+
+              // Create Task button
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Create task logic
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(28, 125, 28, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(
+                    getButtonLabel(),
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+
+
+class AssignWidget extends StatelessWidget {
+  const AssignWidget({
+    super.key,
+    required this.assignedUsers,
+  });
+
+  final List<String> assignedUsers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text('Add Collaborators', style: TextStyle(color: Colors.grey[400])),
+        ),
+        const SizedBox(height: 8),
+    Row(
+      children: [
+        ...assignedUsers.map((user) => Container(
+              margin: const EdgeInsets.only(right: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: const Color(0xFF2A2A2A),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(user, style: const TextStyle(color: Colors.white)),
+            )),
+        GestureDetector(
+          onTap: () {}, 
+          child: Container(
+            width: 32,
+            height: 32,
+            decoration: const BoxDecoration(
+              color: Color(0xFF2A2A2A),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.add, color: Colors.white, size: 20),
+          ),
+        ),
+      ],
+    ),
+    const SizedBox(height: 12),
+      ],
     );
   }
 }

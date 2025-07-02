@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:task_manager_app/src/features/create/domain/project.dart';
 import 'package:task_manager_app/src/features/create/domain/tasks.dart';
 import 'package:task_manager_app/src/features/create/presentation/create_screen.dart';
-import 'package:task_manager_app/src/features/home/presentation/widgets/bottom_nav_button.dart';
 import 'package:task_manager_app/src/features/home/presentation/widgets/main_card.dart';
 import 'package:task_manager_app/src/features/profile/presentation/screens/profile_screen.dart';
 

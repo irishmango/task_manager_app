@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager_app/src/features/create/presentation/create_screen.dart';
 import 'package:task_manager_app/src/features/create/presentation/widgets/custom_outlined_button.dart';
 
 class CreateProjectCard extends StatelessWidget {
