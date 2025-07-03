@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:task_manager_app/src/features/auth/presentation/login_screen.dart';
+import 'package:orbit/app.dart';
+import 'package:orbit/auth_repository.dart';
+import 'package:orbit/firebase_auth_repository.dart';
+import 'package:orbit/src/features/auth/presentation/login_screen.dart';
 import 'firebase_options.dart'; 
-import 'package:task_manager_app/src/features/home/presentation/home_screen.dart';
 
 void main() async {
+  
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginScreen(),
-    );
-  }
+  final AuthRepository auth = FirebaseAuthRepository();
+  
+  runApp(App(auth));
 }

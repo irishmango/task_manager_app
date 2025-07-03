@@ -1,4 +1,4 @@
-import 'package:task_manager_app/src/features/create/domain/tasks.dart';
+import 'package:orbit/src/features/create/domain/tasks.dart';
 
 class Project {
   final String id;

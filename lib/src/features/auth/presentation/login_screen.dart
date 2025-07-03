@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager_app/src/features/auth/presentation/register_screen.dart';
-import 'package:task_manager_app/src/features/home/presentation/home_screen.dart';
+import 'package:orbit/auth_repository.dart';
+import 'package:orbit/firebase_auth_repository.dart';
+import 'package:orbit/src/features/auth/presentation/register_screen.dart';
+import 'package:orbit/src/features/home/presentation/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final AuthRepository auth;
+  const LoginScreen({super.key, required this.auth});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -12,7 +15,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,8 +112,16 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 48,
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    // TODO: Handle Google login
+                  onPressed: () async {
+                    try {
+                      await widget.auth.signInWithGoogle();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const HomeScreen()),
+                      );
+                    } catch (e) {
+                      debugPrint('Google sign-in failed: $e');
+                    }
                   },
                   icon: const Icon(Icons.g_mobiledata, color: Colors.white), 
                   label: const Text(

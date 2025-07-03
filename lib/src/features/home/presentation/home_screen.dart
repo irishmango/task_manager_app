@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager_app/src/features/create/domain/project.dart';
-import 'package:task_manager_app/src/features/create/domain/tasks.dart';
-import 'package:task_manager_app/src/features/create/presentation/create_screen.dart';
-import 'package:task_manager_app/src/features/home/presentation/widgets/main_card.dart';
-import 'package:task_manager_app/src/features/profile/presentation/screens/profile_screen.dart';
+import 'package:orbit/src/features/create/domain/project.dart';
+import 'package:orbit/src/features/create/domain/tasks.dart';
+import 'package:orbit/src/features/create/presentation/create_screen.dart';
+import 'package:orbit/src/features/home/presentation/widgets/main_card.dart';
+import 'package:orbit/src/features/profile/presentation/screens/profile_screen.dart';
+import 'package:orbit/src/features/tasks/presentation/task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -133,17 +134,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     final item = shownList[index];
                     if (item['type'] == 'project') {
                       final project = item['data'] as Project;
-                      return MainCard(
-                        tag: 'Project',
-                        title: project.title,
-                        tasks: project.todos.map((t) => t.title).toList(),
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => TaskScreen(title: project.title, description: "", priority: "")));
+                        },
+                        child: MainCard(
+                          tag: 'Project',
+                          title: project.title,
+                          tasks: project.todos.map((t) => t.title).toList(),
+                        ),
                       );
                     } else if (item['type'] == 'task') {
                       final task = item['data'] as Task;
-                      return MainCard(
-                        tag: task.tag,
-                        title: task.title,
-                        tasks: [task.description],
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => TaskScreen(title: task.title, description: task.description, priority: task.priority.toString())));
+                        },
+                        child: MainCard(
+                          tag: task.tag,
+                          title: task.title,
+                          tasks: [task.description],
+                        ),
                       );
                     }
                     return SizedBox(

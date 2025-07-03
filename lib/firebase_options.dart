@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '632906255877',
     projectId: 'my-task-manager-app-2dcaa',
     storageBucket: 'my-task-manager-app-2dcaa.firebasestorage.app',
+    androidClientId: '632906255877-eh1p2ha9tku9hfcjeaqhgj36ahti64d9.apps.googleusercontent.com',
     iosClientId: '632906255877-mv9ier3n4c89qdfg6un4q70o37c1dmka.apps.googleusercontent.com',
     iosBundleId: 'com.example.todoApp',
   );

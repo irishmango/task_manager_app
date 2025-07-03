@@ -1,6 +1,6 @@
 {
-    "name": "task_manager_app",
-    "short_name": "task_manager_app",
+    "name": "Orbit",
+    "short_name": "Orbit",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
